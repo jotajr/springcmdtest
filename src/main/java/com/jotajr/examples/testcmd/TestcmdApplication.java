@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+
 @SpringBootApplication
 public class TestcmdApplication implements CommandLineRunner {
 
@@ -26,6 +28,9 @@ public class TestcmdApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		executorService.executeCmdApp();
+		ArrayList<String> urlsToTest = new ArrayList<>();
+		urlsToTest.add("google.com");
+		urlsToTest.add("github.com");
+		executorService.executeCmdApp(urlsToTest);
 	}
 }
