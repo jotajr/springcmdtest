@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,6 +49,10 @@ public class ExecutorService {
                 if(testeResult != null) {
                     listResultBean.add(testeResult);
                 }
+            }
+
+            if (!listResultBean.isEmpty()) {
+                writeResults(listResultBean);
             }
 
         } else {
@@ -129,6 +135,34 @@ public class ExecutorService {
     }
 
     private void writeResults(List<TestResultBean> resultList) {
+
+        Charset utf8 = StandardCharsets.UTF_8;
+        String pathString = "results/" + SpringCmdTestUtil.getFilename();
+        Path pathWrite = Paths.get(pathString);
+
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add("START_TIME|RESULT|FINISH_TIME|DURATION");
+
+        for (TestResultBean testResult :
+                resultList) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(testResult.getStartTime());
+            stringBuilder.append("|");
+            stringBuilder.append(testResult.getResult());
+            stringBuilder.append("|");
+            stringBuilder.append(testResult.getFinishTime());
+            stringBuilder.append("|");
+            stringBuilder.append(testResult.getDuration());
+            lines.add(stringBuilder.toString());
+        }
+
+        try {
+
+            Files.write(pathWrite, lines, utf8);
+
+        } catch (IOException e) {
+            LOGGER.error("Fail to write results file. Error: {}", e.getMessage());
+        }
 
     }
 

@@ -27,7 +27,7 @@ public class TestcmdApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		ArrayList<String> urlsToTest = new ArrayList<>();
 		urlsToTest.add("google.com");
 		urlsToTest.add("github.com");
